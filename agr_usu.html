@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de Registro</title>
+  <style>
+    /* Estilos generales */
+    body {
+      background-image: url("https://www.wallpapertip.com/wmimgs/51-513883_new-era-caps.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+      background-color: #1a1a1a;
+      font-family: Arial, sans-serif;
+      color: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 500px;
+      background: linear-gradient(135deg, #333, #1a1a1a);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .form-control {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #262626;
+      color: #f0f0f0;
+      outline: none;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    input::placeholder, select {
+      color: #aaa;
+    }
+
+    input:focus, select:focus {
+      background-color: #3d3d3d;
+      box-shadow: 0 0 10px #009688, 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+
+    button {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #ffffff;
+      background: linear-gradient(135deg, #009688, #006064);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #00796b, #004d40);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
+    }
+
+    label {
+      font-size: 0.9rem;
+      color: #f0f0f0;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    small {
+      color: #ff5722;
+      font-size: 0.8rem;
+      position: absolute;
+      bottom: -1.2rem;
+      left: 0.2rem;
+      display: none;
+    }
+
+    .form-control input:invalid ~ small,
+    .form-control select:invalid ~ small {
+      display: block;
+    }
+
+    #password-confirm-error {
+      display: none;
+    }
+
+    
+  </style>
+</head>
+<body>
+
+    
+
+  <div class="container" id="container">
+    <div class="form-container register-container">
+      <form id="register-form" action="agr_us.php" method="POST" onsubmit="return validatePasswords()">
+        <h1>Regístra Usuarios</h1>
+        <div class="form-control">
+          <input type="text" name="username" id="username" placeholder="Nombre" required />
+          <small id="username-error">Por favor ingresa tu nombre.</small>
+        </div>
+        <div class="form-control">
+          <input type="text" name="ape_p" id="ape_p" placeholder="Apellido Paterno" required />
+          <small id="ape_p-error">Por favor ingresa tu apellido paterno.</small>
+        </div>
+        <div class="form-control">
+          <input type="text" name="ape_m" id="ape_m" placeholder="Apellido Materno" required />
+          <small id="ape_m-error">Por favor ingresa tu apellido materno.</small>
+        </div>
+        <div class="form-control">
+          <input type="email" name="email" id="email" placeholder="Correo electrónico" required />
+          <small id="email-error">Por favor ingresa un correo válido.</small>
+        </div>
+        <div class="form-control">
+          <label for="user-type">Tipo:</label>
+          <select name="user_type" id="user-type" required>
+            <option value="">Selecciona un tipo</option>
+            <option value="user">Usuario</option>
+            <option value="admin">Administrador</option>
+          </select>
+          <small id="user-type-error">Por favor selecciona un tipo de usuario.</small>
+        </div>
+        <div class="form-control">
+          <input type="password" name="password" id="password" placeholder="Contraseña" required />
+          <small id="password-error">Por favor ingresa una contraseña.</small>
+        </div>
+        <div class="form-control">
+          <input type="password" name="password_confirm" id="password_confirm" placeholder="Confirmar Contraseña" required />
+          <small id="password-confirm-error">Las contraseñas no coinciden.</small>
+        </div>
+        <button type="submit">Registrar</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function validatePasswords() {
+      const password = document.getElementById("password").value;
+      const passwordConfirm = document.getElementById("password_confirm").value;
+      const error = document.getElementById("password-confirm-error");
+
+      if (password !== passwordConfirm) {
+        error.style.display = "block";
+        return false;
+      } else {
+        error.style.display = "none";
+        return true;
+      }
+    }
+  </script>
+
+</body>
+</html>

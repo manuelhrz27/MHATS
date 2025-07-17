@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Producto</title>
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-image: url("https://www.wallpapertip.com/wmimgs/51-513883_new-era-caps.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+    background-color: #121212;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form-container {
+    background-color: #222;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 400px;
+    text-align: center;
+}
+
+h1 {
+    color: #ff6600;
+    margin-bottom: 1rem;
+    animation: fadeIn 1s ease;
+}
+
+label {
+    color: #ff6600;
+    display: block;
+    margin-top: 1rem;
+    text-align: left;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    background-color: #333;
+    border: 1px solid #444;
+    color: #fff;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="file"]:focus {
+    border-color: #ff6600;
+    box-shadow: 0 0 8px #ff6600;
+}
+
+button {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1.5rem;
+    background-color: #ff6600;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #ff8800;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form action="guardar_pro.php" method="POST" enctype="multipart/form-data">
+            <h1>Registrar Producto</h1>
+
+            <label for="nombre">Nombre del Producto:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="precio_venta">Precio de Venta:</label>
+            <input type="number" step="0.01" id="precio_venta" name="precio_venta" required>
+
+            <label for="precio_compra">Precio de Compra:</label>
+            <input type="number" step="0.01" id="precio_compra" name="precio_compra" required>
+
+            <label for="categoria">Categoría:</label>
+            <input type="text" id="categoria" name="categoria" required>
+
+            <label for="stock">Stock:</label>
+            <input type="number" id="stock" name="stock" required>
+
+            <label for="imagen">Imagen:</label>
+            <input type="file" id="imagen" name="imagen" accept="image/*" required>
+
+            <button type="submit">Registrar</button>
+        </form>
+    </div>
+</body>
+</html>

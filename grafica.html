@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráficas Interactivas</title>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin: 20px;
+            font-size: 2rem;
+            text-transform: uppercase;
+            color: #ff9800;
+            text-align: center;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        button {
+            background-color: #ff9800;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ff5722;
+        }
+
+        .chart-container {
+            display: none;
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            background: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gráficas Interactivas</h1>
+    <div class="buttons-container">
+        <button onclick="showChart('ventasPorMes')">Ventas por Mes</button>
+        <button onclick="showChart('productosMasVendidos')">Productos Más Vendidos</button>
+        <button onclick="showChart('usuariosConMasPedidos')">Usuarios con Más Pedidos</button>
+        <button onclick="showChart('categoriasMasPopulares')">Categorías Más Populares</button>
+        <button onclick="showChart('cantidadUsuarios')">Cantidad de Usuarios</button>
+        <button onclick="showChart('ingresosTotales')">Ingresos Totales</button>
+    </div>
+
+    <!-- Contenedores para las gráficas -->
+    <div id="ventasPorMes" class="chart-container">
+        <canvas id="ventasPorMesCanvas"></canvas>
+    </div>
+    <div id="productosMasVendidos" class="chart-container">
+        <canvas id="productosMasVendidosCanvas"></canvas>
+    </div>
+    <div id="usuariosConMasPedidos" class="chart-container">
+        <canvas id="usuariosConMasPedidosCanvas"></canvas>
+    </div>
+    <div id="categoriasMasPopulares" class="chart-container">
+        <canvas id="categoriasMasPopularesCanvas"></canvas>
+    </div>
+    <div id="cantidadUsuarios" class="chart-container">
+        <canvas id="cantidadUsuariosCanvas"></canvas>
+    </div>
+    <div id="ingresosTotales" class="chart-container">
+        <canvas id="ingresosTotalesCanvas"></canvas>
+    </div>
+
+    <script>
+        let chartData = {}; // Variable para almacenar los datos cargados
+
+        // Función para cargar los datos desde graficas.php
+        async function loadData() {
+            try {
+                const response = await fetch("graficas.php");
+                chartData = await response.json();
+                console.log("Datos cargados correctamente:", chartData); // Depuración
+            } catch (error) {
+                console.error("Error al cargar datos:", error);
+            }
+        }
+
+        // Llamar a la función de carga de datos
+        loadData();
+
+        // Función para mostrar una gráfica
+        function showChart(chartId) {
+            document.querySelectorAll('.chart-container').forEach(container => {
+                container.style.display = 'none';
+            });
+            document.getElementById(chartId).style.display = 'block';
+
+            switch (chartId) {
+                case 'ventasPorMes':
+                    createChart('ventasPorMesCanvas', 'pie', chartData.ventas_mes.map(item => item.mes), chartData.ventas_mes.map(item => item.ventas), 'Ventas por Mes');
+                    break;
+                case 'productosMasVendidos':
+                    createChart('productosMasVendidosCanvas', 'bar', chartData.productos_mas_vendidos.map(item => item.nombre), chartData.productos_mas_vendidos.map(item => item.total), 'Productos Más Vendidos');
+                    break;
+                case 'usuariosConMasPedidos':
+                    createChart('usuariosConMasPedidosCanvas', 'polarArea', chartData.usuarios_pedidos.map(item => item.usuario_nombre), chartData.usuarios_pedidos.map(item => item.total_pedidos), 'Usuarios con Más Pedidos');
+                    break;
+                case 'categoriasMasPopulares':
+                    createChart('categoriasMasPopularesCanvas', 'doughnut', chartData.categorias_populares.map(item => item.categoria), chartData.categorias_populares.map(item => item.total), 'Categorías Más Populares');
+                    break;
+                case 'cantidadUsuarios':
+                    createChart('cantidadUsuariosCanvas', 'bar', ['Usuarios'], [chartData.total_usuarios.total_usuarios], 'Cantidad de Usuarios');
+                    break;
+                case 'ingresosTotales':
+                    createChart('ingresosTotalesCanvas', 'bar', ['Ingresos'], [chartData.ingresos_totales.ingresos_totales], 'Ingresos Totales');
+                    break;
+            }
+        }
+
+        // Función para crear gráficas dinámicamente
+        function createChart(canvasId, type, labels, data, title) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: title,
+                        data: data,
+                        backgroundColor: ['#ff9800', '#03a9f4', '#8bc34a', '#e91e63', '#ffc107', '#673ab7', '#00bcd4'],
+                        borderColor: '#ffffff',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: title,
+                            color: '#ffffff'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#ffffff'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#ffffff'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
